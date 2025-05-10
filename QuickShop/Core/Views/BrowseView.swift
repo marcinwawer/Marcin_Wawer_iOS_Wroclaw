@@ -38,19 +38,13 @@ struct BrowseView: View {
     }
 }
 
+// MARK: VARS
 extension BrowseView {
     private var productList: some View {
-        //                List(vm.products) { product in
-        //                    ProductRowView(product: product)
-        //                }
-        
-        ScrollView {
-            LazyVStack {
-                ForEach(vm.products) { product in
-                    ProductRowView(product: product)
-                        .padding(.horizontal)
-                }
-            }
+        List(vm.products) { product in
+            ProductRowView(product: product)
+                .listRowSeparator(.hidden)
         }
+        .listStyle(.plain)
     }
 }

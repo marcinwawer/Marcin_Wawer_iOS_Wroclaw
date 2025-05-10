@@ -48,6 +48,7 @@ struct ProductRowView: View {
         .environmentObject(DeveloperPreview.shared.shopVM)
 }
 
+// MARK: VARS
 extension ProductRowView {
     private var productImage: some View {
         Image(product.imageName)
