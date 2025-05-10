@@ -40,11 +40,24 @@ struct BrowseView: View {
 
 // MARK: VARS
 extension BrowseView {
-    private var productList: some View {
-        List(vm.products) { product in
-            ProductRowView(product: product)
-                .listRowSeparator(.hidden)
+    private var productList: some View {        
+        ScrollView {
+            ForEach(vm.products) { product in
+                ProductRowView(
+                    product: product,
+                    isFavorite: vm.isFavorite(product.id),
+                    remainingStock: vm.remainingStock(product.id),
+                    quantity: Binding(
+                        get: { vm.quantityInCart(product.id) },
+                        set: { vm.updateCart(product.id, quantity: $0) }
+                    ),
+                    onFavoriteToggle: {
+                        vm.toggleFavorite(product.id)
+                    }
+                )
+                .padding(.horizontal)
+                .padding(.vertical, 4)
+            }
         }
-        .listStyle(.plain)
     }
 }

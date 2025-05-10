@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct ProductRowView: View {
-    @EnvironmentObject private var vm: ShopViewModel
     let product: Product
+    let isFavorite: Bool
+    let remainingStock: Int
+    @Binding var quantity: Int
+    let onFavoriteToggle: () -> Void
     
-    private let width: CGFloat = 140
-    private let height: CGFloat = 140
+    private let width: CGFloat = 150
+    private let height: CGFloat = 150
     
     var body: some View {
         HStack {
@@ -25,7 +28,7 @@ struct ProductRowView: View {
                 
                 productPrice
                 
-                QuantityStepper(id: product.id)
+                QuantityStepper(quantity: $quantity)
             }
             .padding(.vertical, 8)
             .frame(maxHeight: height)
@@ -33,6 +36,7 @@ struct ProductRowView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity)
+        .frame(height: height)
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.theme.yellow.opacity(0.3))
@@ -44,8 +48,13 @@ struct ProductRowView: View {
 }
 
 #Preview {
-    ProductRowView(product: DeveloperPreview.shared.sampleProduct)
-        .environmentObject(DeveloperPreview.shared.shopVM)
+    ProductRowView(
+        product: DeveloperPreview.shared.sampleProduct,
+        isFavorite: false,
+        remainingStock: 10,
+        quantity: .constant(0)) {
+            DeveloperPreview.shared.shopVM.toggleFavorite(DeveloperPreview.shared.sampleProduct.id)
+        }
 }
 
 // MARK: VARS
@@ -65,10 +74,11 @@ extension ProductRowView {
                 .font(.headline)
                 .padding(.trailing, 25)
             
-            Text("\(vm.remainingStock(product.id)) items in stock")
+            Text("\(remainingStock) items in stock")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
+        .animation(.easeIn(duration: 0.3), value: remainingStock)
     }
     
     private var productPrice: some View {
@@ -85,13 +95,12 @@ extension ProductRowView {
     }
     
     private var heartButton: some View {
-        Image(systemName: vm.isFavorite(product.id) ? "heart.fill" : "heart")
+        Image(systemName: isFavorite ? "heart.fill" : "heart")
             .padding(8)
             .frame(maxHeight: height, alignment: .top)
             .onTapGesture {
-                withAnimation {
-                    vm.toggleFavorite(product.id)
-                }
+                onFavoriteToggle()
             }
+            .animation(.default, value: isFavorite)
     }
 }
