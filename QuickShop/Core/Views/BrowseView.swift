@@ -17,17 +17,7 @@ struct BrowseView: View {
             } else if let error = vm.errorLoading {
                 Text(error).foregroundColor(.red)
             } else {
-//                List(vm.products) { product in
-//                    ProductRowView(product: product)
-//                }
-                ScrollView {
-                    LazyVStack {
-                        ForEach(vm.products) { product in
-                            ProductRowView(product: product)
-                                .padding(.horizontal)
-                        }
-                    }
-                }
+                productList
             }
         }
         .navigationTitle("Browse")
@@ -45,5 +35,22 @@ struct BrowseView: View {
     NavigationStack {
         BrowseView()
             .environmentObject(DeveloperPreview.shared.shopVM)
+    }
+}
+
+extension BrowseView {
+    private var productList: some View {
+        //                List(vm.products) { product in
+        //                    ProductRowView(product: product)
+        //                }
+        
+        ScrollView {
+            LazyVStack {
+                ForEach(vm.products) { product in
+                    ProductRowView(product: product)
+                        .padding(.horizontal)
+                }
+            }
+        }
     }
 }

@@ -16,34 +16,14 @@ struct ProductRowView: View {
     
     var body: some View {
         HStack {
-            Image(product.imageName)
-                .resizable()
-                .frame(width: width-20, height: height-20)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .padding(.leading, 8)
+            productImage
             
             VStack(alignment: .leading) {
-                Text(product.productDescription)
-                    .lineLimit(2)
-                    .font(.headline)
-                    .padding(.trailing, 25)
-                
-                Text("\(vm.remainingStock(product.id)) items in stock")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+                productDescription
                 
                 Spacer()
                 
-                HStack {
-                    Text(product.priceValue.twoDecimalPlaces + " £")
-                        .strikethrough(product.discountedPrice != product.priceValue)
-                    
-                    if product.discountedPrice != product.priceValue {
-                        Text(product.discountedPrice.twoDecimalPlaces + " £")
-                    }
-                }
-                .font(.subheadline)
-                .foregroundStyle(Color.theme.red)
+                productPrice
                 
                 QuantityStepper(id: product.id)
             }
@@ -58,14 +38,7 @@ struct ProductRowView: View {
                 .fill(Color.theme.yellow.opacity(0.3))
         )
         .overlay(alignment: .topTrailing, content: {
-            Image(systemName: vm.isFavorite(product.id) ? "heart.fill" : "heart")
-                .padding(8)
-                .frame(maxHeight: height, alignment: .top)
-                .onTapGesture {
-                    withAnimation {
-                        vm.toggleFavorite(product.id)
-                    }
-                }
+            heartButton
         })
     }
 }
@@ -73,4 +46,51 @@ struct ProductRowView: View {
 #Preview {
     ProductRowView(product: DeveloperPreview.shared.sampleProduct)
         .environmentObject(DeveloperPreview.shared.shopVM)
+}
+
+extension ProductRowView {
+    private var productImage: some View {
+        Image(product.imageName)
+            .resizable()
+            .frame(width: width-20, height: height-20)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .padding(.leading, 8)
+    }
+    
+    private var productDescription: some View {
+        Group {
+            Text(product.productDescription)
+                .lineLimit(2)
+                .font(.headline)
+                .padding(.trailing, 25)
+            
+            Text("\(vm.remainingStock(product.id)) items in stock")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+        }
+    }
+    
+    private var productPrice: some View {
+        HStack {
+            Text(product.priceValue.twoDecimalPlaces + " £")
+                .strikethrough(product.discountedPrice != product.priceValue)
+            
+            if product.discountedPrice != product.priceValue {
+                Text(product.discountedPrice.twoDecimalPlaces + " £")
+            }
+        }
+        .font(.subheadline)
+        .foregroundStyle(Color.theme.red)
+    }
+    
+    private var heartButton: some View {
+        Image(systemName: vm.isFavorite(product.id) ? "heart.fill" : "heart")
+            .padding(8)
+            .frame(maxHeight: height, alignment: .top)
+            .onTapGesture {
+                withAnimation {
+                    vm.toggleFavorite(product.id)
+                }
+            }
+    }
 }
