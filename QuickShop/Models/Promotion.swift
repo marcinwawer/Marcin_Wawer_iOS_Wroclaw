@@ -10,6 +10,11 @@ import Foundation
 struct Promotion: Codable {
     let type: PromotionType
     let value: String
+    
+    var numValue: Double {
+        let digits = value.filter { "0123456789.".contains($0) }
+        return Double(digits) ?? 0
+    }
 }
 
 enum PromotionType: String, Codable {

@@ -26,4 +26,39 @@ struct Product: Codable, Identifiable {
     var imageName: String {
         (rawImage as NSString).deletingPathExtension
     }
+    
+    var priceValue: Double {
+        let digits = price.filter { "0123456789.".contains($0) }
+        return Double(digits) ?? 0
+    }
+    
+    var discountedPrice: Double {
+        promotions.reduce(priceValue) { currentPrice, promo in
+            switch promo.type {
+            case .discount:
+                return max(currentPrice - promo.numValue, 0)
+            case .percentage:
+                let factor = (100 - promo.numValue) / 100
+                return max(currentPrice * factor, 0)
+            }
+        }
+    }
+    
+    init(
+        id: UUID,
+        productDescription: String,
+        price: String,
+        promotions: [Promotion],
+        rawImage: String,
+        isFavorite: Bool,
+        inStock: Int
+    ) {
+        self.id = id
+        self.productDescription = productDescription
+        self.price = price
+        self.promotions = promotions
+        self.rawImage = rawImage
+        self.isFavorite = isFavorite
+        self.inStock = inStock
+    }
 }
