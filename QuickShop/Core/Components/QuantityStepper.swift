@@ -20,7 +20,7 @@ struct QuantityStepper: View {
             Text("\(quantity)")
                 .frame(maxWidth: .infinity)
                 .frame(height: height)
-                .background(.white)
+                .background(Color.theme.background)
             
             plusButton
         }

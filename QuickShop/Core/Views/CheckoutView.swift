@@ -77,6 +77,7 @@ extension CheckoutView {
             HapticManager.shared.notification(type: .success)
         } label: {
             Text("Checkout")
+                .foregroundStyle(.black)
                 .frame(maxWidth: .infinity)
                 .frame(height: 50)
                 .background(Color.theme.yellow)

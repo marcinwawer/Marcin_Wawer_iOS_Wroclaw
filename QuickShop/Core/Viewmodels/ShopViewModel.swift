@@ -18,7 +18,7 @@ final class ShopViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var errorLoading: String? = nil
     @Published var searchText: String = ""
-    @Published var sortOption: SortOption = .stockAsc
+    @Published var sortOption: SortOption = .none
     
     private let favoritesManager = FavoritesManager()
     private let cartManager = CartManager()
@@ -108,7 +108,7 @@ final class ShopViewModel: ObservableObject {
 // MARK: SORTING & FILTERING
 extension ShopViewModel {
     enum SortOption {
-        case priceAsc, priceDesc, stockAsc, stockDesc
+        case priceAsc, priceDesc, stockAsc, stockDesc, none
     }
     
     private func filterAndSortProducts(text: String, products: [Product], sort: SortOption) -> [Product] {
@@ -128,14 +128,16 @@ extension ShopViewModel {
     
     private func sortProducts(sort: SortOption, products: inout [Product]) {
         switch sort {
+        case .none:
+            break
         case .priceAsc:
             products.sort(by: { $0.discountedPrice < $1.discountedPrice })
         case .priceDesc:
             products.sort(by: { $0.discountedPrice > $1.discountedPrice })
         case .stockAsc:
-            products.sort(by: { $0.inStock > $1.inStock })
-        case .stockDesc:
             products.sort(by: { $0.inStock < $1.inStock })
+        case .stockDesc:
+            products.sort(by: { $0.inStock > $1.inStock })
         }
     }
 }

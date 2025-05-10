@@ -36,6 +36,9 @@ struct BrowseView: View {
                 }
             }
         }
+        .onDisappear {
+            vm.sortOption = .none
+        }
         .task { await vm.loadProducts() }
     }
 }
@@ -70,7 +73,7 @@ extension BrowseView {
                 Text("Stock")
                 Image(systemName: "chevron.down")
                     .opacity((vm.sortOption == .stockAsc || vm.sortOption == .stockDesc) ? 1 : 0)
-                    .rotation3DEffect(.degrees(vm.sortOption == .stockAsc ? 0 : 180), axis: (x: 1, y: 0, z: 0))
+                    .rotation3DEffect(.degrees(vm.sortOption == .stockDesc ? 0 : 180), axis: (x: 1, y: 0, z: 0))
             }
             .onTapGesture {
                 withAnimation(.default) {
@@ -82,7 +85,7 @@ extension BrowseView {
                 Text("Price")
                 Image(systemName: "chevron.down")
                     .opacity((vm.sortOption == .priceAsc || vm.sortOption == .priceDesc) ? 1 : 0)
-                    .rotation3DEffect(.degrees(vm.sortOption == .priceAsc ? 0 : 180), axis: (x: 1, y: 0, z: 0))
+                    .rotation3DEffect(.degrees(vm.sortOption == .priceDesc ? 0 : 180), axis: (x: 1, y: 0, z: 0))
             }
             .onTapGesture {
                 withAnimation(.default) {
@@ -91,6 +94,11 @@ extension BrowseView {
             }
             
             Spacer()
+            
+            Text("Reset Sorting")
+                .onTapGesture {
+                    vm.sortOption = .none
+                }
         }
     }
 }
