@@ -16,8 +16,10 @@ struct BundleProductService: ProductFetching {
             throw NSError(domain: "BundleProductService", code: 1, userInfo: [NSLocalizedDescriptionKey: "File not found."])
         }
         
-        let data = try Data(contentsOf: url)
-        let wrapper = try JSONDecoder().decode(ItemsResponse.self, from: data)
-        return wrapper.items
+        let items = try await Task.detached(priority: .userInitiated) {
+            let data = try Data(contentsOf: url)
+            return try JSONDecoder().decode(ItemsResponse.self, from: data).items
+        }.value
+        return items
     }
 }
