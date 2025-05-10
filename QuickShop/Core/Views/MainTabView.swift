@@ -18,7 +18,7 @@ struct MainTabView: View {
             }
             
             NavigationStack {
-                Image(systemName: "clock")
+                CheckoutView()
             }
             .tabItem {
                 Label("Checkout", systemImage: "clock")
