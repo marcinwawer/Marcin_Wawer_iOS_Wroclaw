@@ -12,13 +12,18 @@ struct Product: Codable, Identifiable {
     let productDescription: String
     let price: String
     let promotions: [Promotion]
-    let image: String
+    private let rawImage: String
     let isFavorite: Bool
     let inStock: Int
     
     enum CodingKeys: String, CodingKey {
         case id = "productId"
         case productDescription = "description"
-        case price, promotions, image, isFavorite, inStock
+        case rawImage = "image"
+        case price, promotions, isFavorite, inStock
+    }
+    
+    var imageName: String {
+        (rawImage as NSString).deletingPathExtension
     }
 }
