@@ -13,22 +13,26 @@ struct CheckoutView: View {
     @State private var checkoutAlert = false
     
     var body: some View {
-        VStack {
-            if vm.cartEntries.isEmpty {
-                emptyCart
-            } else {
-                productList
-                checkoutButton
+        ZStack {
+            VStack {
+                if vm.cartEntries.isEmpty {
+                    emptyCart
+                        .transition(.opacity.combined(with: .scale))
+                } else {
+                    productList
+                    checkoutButton
+                }
             }
-        }
-        .navigationTitle("Checkout")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Text("\(vm.totalPrice.twoDecimalPlaces) £")
+            .animation(.easeInOut, value: vm.cartEntries.isEmpty)
+            .navigationTitle("Checkout")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Text("\(vm.totalPrice.twoDecimalPlaces) £")
+                }
             }
+            .alert("Order", isPresented: $checkoutAlert) {} message: { checkoutAlertMessage }
         }
-        .alert("Order", isPresented: $checkoutAlert) {} message: { checkoutAlertMessage }
     }
 }
 
