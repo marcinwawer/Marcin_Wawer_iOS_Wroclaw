@@ -18,7 +18,6 @@ struct CheckoutView: View {
                 emptyCart
             } else {
                 productList
-                
                 checkoutButton
             }
         }
@@ -71,6 +70,7 @@ extension CheckoutView {
     private var checkoutButton: some View {
         Button {
             checkoutAlert = true
+            HapticManager.shared.notification(type: .success)
         } label: {
             Text("Checkout")
                 .frame(maxWidth: .infinity)

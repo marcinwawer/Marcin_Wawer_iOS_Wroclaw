@@ -9,6 +9,7 @@ import SwiftUI
 
 struct QuantityStepper: View {
     @Binding var quantity: Int
+    let inStockMax: Int
     
     private let height: CGFloat = 30
     
@@ -29,7 +30,7 @@ struct QuantityStepper: View {
 }
 
 #Preview {
-    QuantityStepper(quantity: .constant(0))
+    QuantityStepper(quantity: .constant(0), inStockMax: 10)
         .frame(width: 150)
 }
 
@@ -37,22 +38,28 @@ extension QuantityStepper {
     private var minusButton: some View {
         Button {
             quantity -= 1
+            HapticManager.shared.notification(type: .success)
         } label: {
             Image(systemName: "minus")
                 .frame(maxWidth: .infinity, maxHeight: height)
         }
         .foregroundStyle(.black)
         .background(Color.theme.yellow.opacity(0.5))
+        .disabled(quantity <= 0)
+        .opacity(quantity <= 0 ? 0.5 : 1)
     }
     
     private var plusButton: some View {
         Button {
             quantity += 1
+            HapticManager.shared.notification(type: .success)
         } label: {
             Image(systemName: "plus")
                 .frame(maxWidth: .infinity, maxHeight: height)
         }
         .foregroundStyle(.black)
         .background(Color.theme.yellow)
+        .disabled(quantity >= inStockMax)
+        .opacity(quantity >= inStockMax ? 0.5 : 1)
     }
 }

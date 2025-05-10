@@ -28,7 +28,7 @@ struct ProductRowView: View {
                 
                 productPrice
                 
-                QuantityStepper(quantity: $quantity)
+                QuantityStepper(quantity: $quantity, inStockMax: product.inStock)
             }
             .padding(.vertical, 8)
             .frame(maxHeight: height)
