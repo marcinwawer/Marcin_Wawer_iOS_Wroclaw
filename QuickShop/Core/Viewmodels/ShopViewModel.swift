@@ -5,23 +5,27 @@
 //  Created by Marcin Wawer on 10-05-2025.
 //
 
-import SwiftUI
+import Foundation
+import Combine
 
+@MainActor
 final class ShopViewModel: ObservableObject {
-    @Published var products: [Product] = []
-    @Published var favorites: Set<UUID> = []
-    @Published var cartItems: [UUID:Int] = [:]
+    @Published private(set) var products: [Product] = []
+    @Published private(set) var favorites: Set<UUID> = []
+    @Published private(set) var cartItems: [UUID: Int] = [:]
+    
     @Published var isLoading: Bool = false
     @Published var errorLoading: String? = nil
     
-    private let favoritesManager: FavoritesManager
-    private let cartManager: CartManager
+    private let favoritesManager = FavoritesManager()
+    private let cartManager = CartManager()
     private let productService: ProductFetching
     
-    init(favoritesManager: FavoritesManager, cartManager: CartManager, productService: ProductFetching = BundleProductService()) {
-        self.favoritesManager = favoritesManager
-        self.cartManager = cartManager
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(productService: ProductFetching = BundleProductService()) {
         self.productService = productService
+        addSubscribers()
     }
     
     var cartEntries: [(product: Product, quantity: Int)] {
@@ -37,6 +41,18 @@ final class ShopViewModel: ObservableObject {
         }
     }
     
+    private func addSubscribers() {
+        favoritesManager.$favorites
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in self?.favorites = $0 }
+            .store(in: &cancellables)
+        
+        cartManager.$items
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in self?.cartItems = $0 }
+            .store(in: &cancellables)
+    }
+    
     func loadProducts() async {
         isLoading = true
         defer { isLoading = false }
@@ -45,9 +61,6 @@ final class ShopViewModel: ObservableObject {
             let decoded = try await productService.fetchProducts()
             favoritesManager.seed(from: decoded)
             products = decoded
-            
-            favorites = favoritesManager.favorites
-            cartItems = cartManager.items
         } catch {
             errorLoading = error.localizedDescription
         }
@@ -63,13 +76,20 @@ final class ShopViewModel: ObservableObject {
     
     func toggleFavorite(_ id: UUID) {
         favoritesManager.toggle(id)
-        favorites = favoritesManager.favorites
     }
     
     func updateCart(_ id: UUID, quantity: Int) {
         let stock = products.first(where: { $0.id == id })?.inStock ?? 0
         let quantity = min(quantity, stock)
         cartManager.update(id, quantity: quantity)
-        cartItems = cartManager.items
+    }
+    
+    func remainingStock(_ id: UUID) -> Int {
+        guard let product = products.first(where: { $0.id == id }) else {
+            return 0
+        }
+        
+        let inCart = quantityInCart(id)
+        return max(product.inStock - inCart, 0)
     }
 }

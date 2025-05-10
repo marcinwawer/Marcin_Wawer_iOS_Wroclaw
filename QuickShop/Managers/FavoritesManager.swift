@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-final class FavoritesManager: ObservableObject {
+@MainActor
+final class FavoritesManager {
     @AppStorage("favoriteProductIDs") private var favoriteData: Data = Data()
     @Published private(set) var favorites: Set<UUID> = []
     

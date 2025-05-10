@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-final class CartManager: ObservableObject {
+@MainActor
+final class CartManager {
     @AppStorage("cartItems") private var cartData: Data = Data()
     @Published private(set) var items: [UUID: Int] = [:]
     
