@@ -82,7 +82,8 @@ extension CheckoutView {
                 .frame(height: 50)
                 .background(Color.theme.yellow)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                .padding()
+                .padding(.horizontal, 8)
+                .padding(.bottom, 8)
         }
     }
     
