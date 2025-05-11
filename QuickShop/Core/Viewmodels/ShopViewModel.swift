@@ -30,6 +30,7 @@ final class ShopViewModel: ObservableObject {
     init(productService: ProductFetching = BundleProductService()) {
         self.productService = productService
         addSubscribers()
+        print("WITAM")
     }
     
 // MARK: - Computed Properties
@@ -123,7 +124,7 @@ final class ShopViewModel: ObservableObject {
     ///   - id: The `UUID` of the product.
     ///   - quantity: The desired quantity.
     func updateCart(_ id: UUID, quantity: Int) {
-        let stock = products.first(where: { $0.id == id })?.inStock ?? 0
+        let stock = allProducts.first(where: { $0.id == id })?.inStock ?? 0
         let quantity = min(quantity, stock)
         cartManager.update(id, quantity: quantity)
     }
@@ -132,7 +133,7 @@ final class ShopViewModel: ObservableObject {
     /// - Parameter id: The `UUID` of the product.
     /// - Returns: `max(inStock - quantityInCart(id), 0)`.
     func remainingStock(_ id: UUID) -> Int {
-        guard let product = products.first(where: { $0.id == id }) else {
+        guard let product = allProducts.first(where: { $0.id == id }) else {
             return 0
         }
         

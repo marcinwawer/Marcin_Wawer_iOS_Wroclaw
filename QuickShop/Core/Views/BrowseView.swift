@@ -157,5 +157,6 @@ extension BrowseView {
     func resetSorting() {
         vm.sortOption = .none
         vm.showFavoritesOnly = false
+        vm.searchText = ""
     }
 }

@@ -17,7 +17,7 @@ final class DeveloperPreview {
         shopVM = ShopViewModel()
         sampleProduct = Product(
             id: UUID(uuidString: "A1B2C3D4-E5F6-7890-1234-567890ABCDEF")!,
-            productDescription: "Organic Fair Trade Coffeeasai",
+            productDescription: "Organic Fair Trade Coffee",
             price: "15.99 £",
             promotions: [Promotion(type: .discount, value: "5.00 £")],
             rawImage: "bottle.png",
