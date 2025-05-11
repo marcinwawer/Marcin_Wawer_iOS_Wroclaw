@@ -19,6 +19,7 @@ final class ShopViewModel: ObservableObject {
     @Published var errorLoading: String? = nil
     @Published var searchText: String = ""
     @Published var sortOption: SortOption = .none
+    @Published var showFavoritesOnly: Bool = false
     
     private let favoritesManager = FavoritesManager()
     private let cartManager = CartManager()
@@ -36,7 +37,7 @@ final class ShopViewModel: ObservableObject {
     ///  Returns an array of tuples `(product, quantity)` for each item in the cart.
     var cartEntries: [(product: Product, quantity: Int)] {
         cartItems.compactMap { id, qty in
-            guard let product = products.first(where: { $0.id == id }) else { return nil }
+            guard let product = allProducts.first(where: { $0.id == id }) else { return nil }
             return (product: product, quantity: qty)
         }
     }
@@ -63,10 +64,20 @@ final class ShopViewModel: ObservableObject {
             .sink { [weak self] in self?.cartItems = $0 }
             .store(in: &cancellables)
         
-        $searchText
-            .combineLatest($allProducts, $sortOption)
-            .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
-            .map(filterAndSortProducts)
+        let filterInputs = $searchText.combineLatest($allProducts, $sortOption, $showFavoritesOnly)
+        
+        filterInputs
+            .combineLatest($favorites)
+            .debounce(for: .seconds(0.3), scheduler: DispatchQueue.main)
+            .map { [weak self] four, _ in
+                let (text, all, sort, favOnly) = four
+                return self?.filterSortAndFavorite(
+                    text: text,
+                    products: all,
+                    sort: sort,
+                    favoritesOnly: favOnly
+                ) ?? []
+            }
             .sink { [weak self] in self?.products = $0 }
             .store(in: &cancellables)
     }
@@ -137,18 +148,6 @@ extension ShopViewModel {
         case priceAsc, priceDesc, stockAsc, stockDesc, none
     }
     
-    /// Filters and sorts a given product array according to `searchText` and `sortOption`.
-    /// - Parameters:
-    ///   - text: The search string to filter by.
-    ///   - products: The baseline array of products to filter/sort.
-    ///   - sort: The sort order to apply.
-    /// - Returns: A new array of products matching the filter & sort criteria.
-    private func filterAndSortProducts(text: String, products: [Product], sort: SortOption) -> [Product] {
-        var updatedProducts = filterProducts(text: text, products: products)
-        sortProducts(sort: sort, products: &updatedProducts)
-        return updatedProducts
-    }
-    
     /// Filters products by checking if their `productDescription` contains the lowercase search text.
     /// - Parameters:
     ///   - text: The lowercase search string.
@@ -161,6 +160,25 @@ extension ShopViewModel {
         return products.filter { product in
             return product.productDescription.lowercased().contains(lowercasedText)
         }
+    }
+    
+    /// Filters an array of products by search text, optionally limits the results to favorites, and then sorts them.
+    /// - Parameters:
+    ///   - text: The search string used to filter products. If empty, no filtering by text is applied.
+    ///   - products: The base array of `Product` instances to be filtered and sorted.
+    ///   - sort: A `SortOption` value that determines how the final array is ordered.
+    ///   - favoritesOnly: A flag indicating whether to restrict the final results to the user’s favorite products.
+    /// - Returns: An array that has been filtered by `text`, optionally restricted to favorites, and sorted according to `sort`.
+    private func filterSortAndFavorite(text: String, products: [Product], sort: SortOption, favoritesOnly: Bool) -> [Product] {
+        var updated = filterProducts(text: text, products: products)
+        
+        if favoritesOnly {
+            updated = updated.filter { favorites.contains($0.id) }
+        }
+        
+        sortProducts(sort: sort, products: &updated)
+        
+        return updated
     }
     
     /// Sorts the given product array in place according to the specified `SortOption`.

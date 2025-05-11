@@ -44,9 +44,7 @@ struct BrowseView: View {
                 }
             }
         }
-        .onDisappear {
-            vm.sortOption = .none
-        }
+        .onDisappear(perform: resetSorting)
         .task { await vm.loadProducts() }
     }
 }
@@ -77,6 +75,23 @@ extension BrowseView {
     
     private var sortOptions: some View {
         HStack {
+            HStack(spacing: 4) {
+                Text("Favorites")
+                Image(systemName: "heart.fill")
+                    .opacity(vm.showFavoritesOnly ? 1 : 0)
+            }
+            .onTapGesture {
+                withAnimation(.default) {
+                    vm.showFavoritesOnly.toggle()
+                }
+            }
+            .accessibilityLabel("Filter favorites")
+            .accessibilityValue(
+                vm.showFavoritesOnly ? "Showing only favorites" : "Showing all products"
+            )
+            .accessibilityHint("Double tap to toggle favorite filter")
+            .accessibilityAddTraits(.isButton)
+            
             HStack(spacing: 4) {
                 Text("Stock")
                 Image(systemName: "chevron.down")
@@ -117,14 +132,20 @@ extension BrowseView {
             
             Spacer()
             
-            Text("Reset Sorting")
-                .onTapGesture {
-                    vm.sortOption = .none
-                }
+            Text("Reset")
+                .onTapGesture(perform: resetSorting)
                 .accessibilityLabel("Reset sorting")
                 .accessibilityHint("Restores default product order")
                 .accessibilityAddTraits(.isButton)
         }
-        .lineLimit(2)
+        .lineLimit(1)
+    }
+}
+
+// MARK: - FUNCS
+extension BrowseView {
+    func resetSorting() {
+        vm.sortOption = .none
+        vm.showFavoritesOnly = false
     }
 }

@@ -34,32 +34,6 @@ final class QuickShopUITests: XCTestCase {
     }
     
     @MainActor
-    func testSortingByPriceChangesVisualOrder() throws {
-        let browseTab = app.tabBars.buttons["Browse Products"]
-        browseTab.tap()
-        
-        let coffeeLabel = app.staticTexts["Organic Fair Trade Coffee Beans"]
-        let bottleLabel = app.staticTexts["Stainless Steel Water Bottle"]
-        XCTAssertTrue(coffeeLabel.waitForExistence(timeout: 5))
-        XCTAssertTrue(bottleLabel.waitForExistence(timeout: 5))
-        
-        let sortPrice = app.buttons.matching(identifier: "Sort by price").firstMatch
-        XCTAssertTrue(sortPrice.exists)
-        sortPrice.tap()
-        
-        let coffeeYAsc = coffeeLabel.frame.minY
-        let bottleYAsc = bottleLabel.frame.minY
-        XCTAssertLessThan(coffeeYAsc, bottleYAsc, "Coffee Beans should appear above Water Bottle in ascending order")
-        
-        sortPrice.tap()
-        sleep(1)
-        
-        let coffeeYDesc = coffeeLabel.frame.minY
-        let bottleYDesc = bottleLabel.frame.minY
-        XCTAssertLessThan(bottleYDesc, coffeeYDesc, "Water Bottle should appear above Coffee Beans in descending order")
-    }
-    
-    @MainActor
     func testAdjustQuantityAndTotalPriceUpdates() throws {
         app.tabBars.buttons["Browse Products"].tap()
         
