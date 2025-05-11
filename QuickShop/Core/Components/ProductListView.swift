@@ -14,7 +14,7 @@ struct ProductListView: View {
     let quantity: (UUID) -> Binding<Int>
     let onFavoriteToggle: (UUID) -> Void
     
-    private let minColumnWidth: CGFloat = 400
+    private let minColumnWidth: CGFloat = 350
     
     var body: some View {
         ScrollView {

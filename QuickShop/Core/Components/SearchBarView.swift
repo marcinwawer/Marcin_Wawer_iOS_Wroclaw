@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct SearchBarView: View {
     @Binding var searchText: String
     
@@ -27,7 +25,7 @@ struct SearchBarView: View {
             RoundedRectangle(cornerRadius: 25)
                 .fill(Color.theme.background)
                 .shadow(
-                    color: Color.theme.yellow.opacity(0.15),
+                    color: Color.theme.yellow.opacity(0.4),
                     radius: 10
                 )
         )
