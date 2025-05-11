@@ -30,7 +30,6 @@ final class ShopViewModel: ObservableObject {
     init(productService: ProductFetching = BundleProductService()) {
         self.productService = productService
         addSubscribers()
-        print("WITAM")
     }
     
 // MARK: - Computed Properties
