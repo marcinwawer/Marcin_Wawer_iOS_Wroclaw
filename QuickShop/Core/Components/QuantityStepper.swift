@@ -28,6 +28,7 @@ struct QuantityStepper: View {
         .animation(.easeInOut(duration: 0.3), value: quantity)
         .minimumScaleFactor(0.7)
         .accessibilityElement(children: .ignore)
+        .accessibilityIdentifier("QuantityStepper")
         .accessibilityLabel("Quantity")
         .accessibilityValue("\(quantity)")
         .accessibilityAdjustableAction { direction in
@@ -63,6 +64,7 @@ extension QuantityStepper {
         .background(Color.theme.yellow.opacity(0.5))
         .disabled(quantity <= 0)
         .opacity(quantity <= 0 ? 0.5 : 1)
+        .accessibilityIdentifier("DecreaseQuantityButton")
     }
     
     private var plusButton: some View {
@@ -77,5 +79,6 @@ extension QuantityStepper {
         .background(Color.theme.yellow)
         .disabled(quantity >= inStockMax)
         .opacity(quantity >= inStockMax ? 0.5 : 1)
+        .accessibilityIdentifier("IncreaseQuantityButton")
     }
 }

@@ -20,10 +20,11 @@ final class QuickShopUITestsLaunchTests: XCTestCase {
     @MainActor
     func testLaunch() throws {
         let app = XCUIApplication()
+        app.launchArguments.append("--reset-state")
         app.launch()
-
-        // Insert steps here to perform after app launch but before taking a screenshot,
-        // such as logging into a test account or navigating somewhere in the app
+        
+        let browseTab = app.tabBars.buttons["Browse Products"]
+        XCTAssertTrue(browseTab.waitForExistence(timeout: 5), "The Browse tab should be present immediately after launch.")
 
         let attachment = XCTAttachment(screenshot: app.screenshot())
         attachment.name = "Launch Screen"
