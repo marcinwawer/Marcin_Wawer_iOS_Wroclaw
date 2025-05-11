@@ -42,7 +42,6 @@ final class ShopViewModel: ObservableObject {
         }
     }
     
-    
     /// Calculates the total price by summing `discountedPrice * quantity` for all `cartEntries`.
     var totalPrice: Double {
         cartEntries.reduce(0) { sum, entry in
@@ -162,25 +161,6 @@ extension ShopViewModel {
         }
     }
     
-    /// Filters an array of products by search text, optionally limits the results to favorites, and then sorts them.
-    /// - Parameters:
-    ///   - text: The search string used to filter products. If empty, no filtering by text is applied.
-    ///   - products: The base array of `Product` instances to be filtered and sorted.
-    ///   - sort: A `SortOption` value that determines how the final array is ordered.
-    ///   - favoritesOnly: A flag indicating whether to restrict the final results to the user’s favorite products.
-    /// - Returns: An array that has been filtered by `text`, optionally restricted to favorites, and sorted according to `sort`.
-    private func filterSortAndFavorite(text: String, products: [Product], sort: SortOption, favoritesOnly: Bool) -> [Product] {
-        var updated = filterProducts(text: text, products: products)
-        
-        if favoritesOnly {
-            updated = updated.filter { favorites.contains($0.id) }
-        }
-        
-        sortProducts(sort: sort, products: &updated)
-        
-        return updated
-    }
-    
     /// Sorts the given product array in place according to the specified `SortOption`.
     /// - Parameters:
     ///   - sort: The sort option to apply.
@@ -198,5 +178,24 @@ extension ShopViewModel {
         case .stockDesc:
             products.sort(by: { $0.inStock > $1.inStock })
         }
+    }
+    
+    /// Filters an array of products by search text, optionally limits the results to favorites, and then sorts them.
+    /// - Parameters:
+    ///   - text: The search string used to filter products. If empty, no filtering by text is applied.
+    ///   - products: The base array of `Product` instances to be filtered and sorted.
+    ///   - sort: A `SortOption` value that determines how the final array is ordered.
+    ///   - favoritesOnly: A flag indicating whether to restrict the final results to the user’s favorite products.
+    /// - Returns: An array that has been filtered by `text`, optionally restricted to favorites, and sorted according to `sort`.
+    private func filterSortAndFavorite(text: String, products: [Product], sort: SortOption, favoritesOnly: Bool) -> [Product] {
+        var updated = filterProducts(text: text, products: products)
+        
+        if favoritesOnly {
+            updated = updated.filter { favorites.contains($0.id) }
+        }
+        
+        sortProducts(sort: sort, products: &updated)
+        
+        return updated
     }
 }

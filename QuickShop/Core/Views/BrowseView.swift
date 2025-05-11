@@ -16,11 +16,20 @@ struct BrowseView: View {
                 .accessibilityLabel("Search products")
                 .accessibilityHint("Type here to filter the product list")
             
-            sortOptions
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .padding(.horizontal)
-                .accessibilityElement(children: .contain)
+            HStack {
+                favoritesFilterButton
+                stockSortButton
+                priceSortButton
+                
+                Spacer()
+                
+                resetSortingButton
+            }
+            .lineLimit(1)
+            .font(.subheadline)
+            .foregroundStyle(.secondary)
+            .padding(.horizontal)
+            .accessibilityElement(children: .contain)
             
             VStack {
                 if vm.isLoading {
@@ -73,72 +82,73 @@ extension BrowseView {
         )
     }
     
-    private var sortOptions: some View {
-        HStack {
-            HStack(spacing: 4) {
-                Text("Favorites")
-                Image(systemName: "heart.fill")
-                    .opacity(vm.showFavoritesOnly ? 1 : 0)
-            }
-            .onTapGesture {
-                withAnimation(.default) {
-                    vm.showFavoritesOnly.toggle()
-                }
-            }
-            .accessibilityLabel("Filter favorites")
-            .accessibilityValue(
-                vm.showFavoritesOnly ? "Showing only favorites" : "Showing all products"
-            )
-            .accessibilityHint("Double tap to toggle favorite filter")
-            .accessibilityAddTraits(.isButton)
-            
-            HStack(spacing: 4) {
-                Text("Stock")
-                Image(systemName: "chevron.down")
-                    .opacity((vm.sortOption == .stockAsc || vm.sortOption == .stockDesc) ? 1 : 0)
-                    .rotation3DEffect(.degrees(vm.sortOption == .stockDesc ? 0 : 180), axis: (x: 1, y: 0, z: 0))
-            }
-            .onTapGesture {
-                withAnimation(.default) {
-                    vm.sortOption = vm.sortOption == .stockAsc ? .stockDesc : .stockAsc
-                }
-            }
-            .accessibilityLabel("Sort by stock")
-            .accessibilityValue(
-                vm.sortOption == .stockAsc ? "ascending" :
-                    vm.sortOption == .stockDesc ? "descending" : "not sorted"
-            )
-            .accessibilityHint("Double tap to change sort order")
-            .accessibilityAddTraits(.isButton)
-            
-            HStack(spacing: 4) {
-                Text("Price")
-                Image(systemName: "chevron.down")
-                    .opacity((vm.sortOption == .priceAsc || vm.sortOption == .priceDesc) ? 1 : 0)
-                    .rotation3DEffect(.degrees(vm.sortOption == .priceDesc ? 0 : 180), axis: (x: 1, y: 0, z: 0))
-            }
-            .onTapGesture {
-                withAnimation(.default) {
-                    vm.sortOption = vm.sortOption == .priceAsc ? .priceDesc : .priceAsc
-                }
-            }
-            .accessibilityLabel("Sort by price")
-            .accessibilityValue(
-                vm.sortOption == .priceAsc ? "ascending" :
-                    vm.sortOption == .priceDesc ? "descending" : "not sorted"
-            )
-            .accessibilityHint("Double tap to change sort order")
-            .accessibilityAddTraits(.isButton)
-            
-            Spacer()
-            
-            Text("Reset")
-                .onTapGesture(perform: resetSorting)
-                .accessibilityLabel("Reset sorting")
-                .accessibilityHint("Restores default product order")
-                .accessibilityAddTraits(.isButton)
+    private var favoritesFilterButton: some View {
+        HStack(spacing: 4) {
+            Text("Favorites")
+            Image(systemName: "heart.fill")
+                .opacity(vm.showFavoritesOnly ? 1 : 0)
         }
-        .lineLimit(1)
+        .onTapGesture {
+            withAnimation(.default) {
+                vm.showFavoritesOnly.toggle()
+            }
+        }
+        .accessibilityLabel("Filter favorites")
+        .accessibilityValue(
+            vm.showFavoritesOnly ? "Showing only favorites" : "Showing all products"
+        )
+        .accessibilityHint("Double tap to toggle favorite filter")
+        .accessibilityAddTraits(.isButton)
+    }
+    
+    private var stockSortButton: some View {
+        HStack(spacing: 4) {
+            Text("Stock")
+            Image(systemName: "chevron.down")
+                .opacity((vm.sortOption == .stockAsc || vm.sortOption == .stockDesc) ? 1 : 0)
+                .rotation3DEffect(.degrees(vm.sortOption == .stockDesc ? 0 : 180), axis: (x: 1, y: 0, z: 0))
+        }
+        .onTapGesture {
+            withAnimation(.default) {
+                vm.sortOption = vm.sortOption == .stockAsc ? .stockDesc : .stockAsc
+            }
+        }
+        .accessibilityLabel("Sort by stock")
+        .accessibilityValue(
+            vm.sortOption == .stockAsc ? "ascending" :
+                vm.sortOption == .stockDesc ? "descending" : "not sorted"
+        )
+        .accessibilityHint("Double tap to change sort order")
+        .accessibilityAddTraits(.isButton)
+    }
+    
+    private var priceSortButton: some View {
+        HStack(spacing: 4) {
+            Text("Price")
+            Image(systemName: "chevron.down")
+                .opacity((vm.sortOption == .priceAsc || vm.sortOption == .priceDesc) ? 1 : 0)
+                .rotation3DEffect(.degrees(vm.sortOption == .priceDesc ? 0 : 180), axis: (x: 1, y: 0, z: 0))
+        }
+        .onTapGesture {
+            withAnimation(.default) {
+                vm.sortOption = vm.sortOption == .priceAsc ? .priceDesc : .priceAsc
+            }
+        }
+        .accessibilityLabel("Sort by price")
+        .accessibilityValue(
+            vm.sortOption == .priceAsc ? "ascending" :
+                vm.sortOption == .priceDesc ? "descending" : "not sorted"
+        )
+        .accessibilityHint("Double tap to change sort order")
+        .accessibilityAddTraits(.isButton)
+    }
+    
+    private var resetSortingButton: some View {
+        Text("Reset")
+            .onTapGesture(perform: resetSorting)
+            .accessibilityLabel("Reset sorting")
+            .accessibilityHint("Restores default product order")
+            .accessibilityAddTraits(.isButton)
     }
 }
 

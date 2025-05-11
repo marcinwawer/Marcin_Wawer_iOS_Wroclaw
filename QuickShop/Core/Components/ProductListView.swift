@@ -14,13 +14,13 @@ struct ProductListView: View {
     let quantity: (UUID) -> Binding<Int>
     let onFavoriteToggle: (UUID) -> Void
     
-    private let minColumnWidth: CGFloat = 350
+    private let columns: [GridItem] = [
+        .init(.adaptive(minimum: 350))
+    ]
     
     var body: some View {
         ScrollView {
-            LazyVGrid(
-                columns: [ .init(.adaptive(minimum: minColumnWidth)) ]
-            ) {
+            LazyVGrid(columns: columns) {
                     ForEach(products) { product in
                         ProductRowView(
                             product: product,
