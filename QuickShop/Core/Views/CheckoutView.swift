@@ -42,6 +42,7 @@ struct CheckoutView: View {
         .environmentObject(DeveloperPreview.shared.shopVM)
 }
 
+// MARK: - VARS
 extension CheckoutView {
     private var emptyCart: some View {
         VStack {

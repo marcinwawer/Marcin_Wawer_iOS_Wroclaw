@@ -23,6 +23,7 @@ struct Product: Codable, Identifiable {
         case price, promotions, isFavorite, inStock
     }
     
+    /// The image name without file extension.
     var imageName: String {
         (rawImage as NSString).deletingPathExtension
     }
@@ -32,6 +33,7 @@ struct Product: Codable, Identifiable {
         return Double(digits) ?? 0
     }
     
+    /// Converts the `price` string into a `Double` by stripping non-digit/`.` characters.
     var discountedPrice: Double {
         promotions.reduce(priceValue) { currentPrice, promo in
             switch promo.type {

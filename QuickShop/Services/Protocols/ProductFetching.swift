@@ -8,5 +8,8 @@
 import Foundation
 
 protocol ProductFetching {
+    /// Asynchronously retrieves an array of products.
+    /// - Throws: An error if fetching or decoding fails.
+    /// - Returns: Returns: A `[Product]` array upon successful fetch.
     func fetchProducts() async throws -> [Product]
 }

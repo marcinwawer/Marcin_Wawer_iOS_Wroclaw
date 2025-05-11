@@ -66,7 +66,7 @@ struct ProductRowView: View {
         }
 }
 
-// MARK: VARS
+// MARK: - VARS
 extension ProductRowView {
     private var productImage: some View {
         Image(product.imageName)

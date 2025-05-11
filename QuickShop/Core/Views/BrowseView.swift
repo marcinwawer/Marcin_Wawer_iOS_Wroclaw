@@ -58,7 +58,7 @@ struct BrowseView: View {
     }
 }
 
-// MARK: VARS
+// MARK: - VARS
 extension BrowseView {
     private var productList: some View {
         ProductListView(

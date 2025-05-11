@@ -40,6 +40,7 @@ struct SearchBarView: View {
     SearchBarView(searchText: .constant(""))
 }
 
+// MARK: - VARS
 extension SearchBarView {
     private var searchTextField: some View {
         TextField("Search by name...", text: $searchText)

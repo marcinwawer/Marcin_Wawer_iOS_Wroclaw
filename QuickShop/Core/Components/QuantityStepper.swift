@@ -51,6 +51,7 @@ struct QuantityStepper: View {
         .frame(width: 150)
 }
 
+// MARK: - VARS
 extension QuantityStepper {
     private var minusButton: some View {
         Button {

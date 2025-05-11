@@ -18,6 +18,11 @@ final class FavoritesManager {
         }
     }
     
+    /// Seeds the favorites set from an initial array of products.
+    ///
+    /// This runs only if `favorites` is currently empty, to avoid overriding
+    /// any user-toggled favorites.
+    /// - Parameter products: The full list of products.
     func seed(from products: [Product]) {
         guard favorites.isEmpty else { return }
         
@@ -25,6 +30,8 @@ final class FavoritesManager {
         save()
     }
     
+    /// Toggles the favorite status for a given product ID.
+    /// - Parameter id: The `UUID` of the product to toggle.
     func toggle(_ id: UUID) {
         if favorites.contains(id) {
             favorites.remove(id)
@@ -35,6 +42,7 @@ final class FavoritesManager {
         save()
     }
     
+    /// Encodes the current `favorites` set as a `[UUID]` array and writes it to `favoriteData`.
     private func save() {
         if let data = try? JSONEncoder().encode(Array(favorites)) {
             favoriteData = data

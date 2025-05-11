@@ -11,6 +11,11 @@ struct BundleProductService: ProductFetching {
     let fileName: String = "items"
     let fileExtension: String = "json"
     
+    /// Asynchronously fetches products by reading a JSON file from the app bundle.
+    /// - Throws:
+    ///     - An `NSError` if the file cannot be located in the bundle.
+    ///     - Any decoding error thrown by `JSONDecoder`.
+    /// - Returns: An array of `Product` objects parsed from the JSON’s `items` key.
     func fetchProducts() async throws -> [Product] {
         guard let url = Bundle.main.url(forResource: fileName, withExtension: fileExtension) else {
             throw NSError(domain: "BundleProductService", code: 1, userInfo: [NSLocalizedDescriptionKey: "File not found."])
