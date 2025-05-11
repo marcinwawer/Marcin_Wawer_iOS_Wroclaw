@@ -400,7 +400,7 @@
 				DEVELOPMENT_TEAM = PJV8K27Q6U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = QuickShop;
+				INFOPLIST_KEY_CFBundleDisplayName = Marcin_Wawer_iOS_Wroclaw;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -429,7 +429,7 @@
 				DEVELOPMENT_TEAM = PJV8K27Q6U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = QuickShop;
+				INFOPLIST_KEY_CFBundleDisplayName = Marcin_Wawer_iOS_Wroclaw;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
