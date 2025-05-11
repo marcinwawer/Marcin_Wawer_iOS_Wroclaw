@@ -33,6 +33,7 @@ struct CheckoutView: View {
             }
             .alert("Order", isPresented: $checkoutAlert) {} message: { checkoutAlertMessage }
         }
+        .accessibilityElement(children: .contain)
     }
 }
 
@@ -54,6 +55,7 @@ extension CheckoutView {
         }
         .foregroundColor(.secondary)
         .padding()
+        .accessibilityElement(children: .combine)
     }
     
     private var productList: some View {
@@ -85,6 +87,15 @@ extension CheckoutView {
                 .padding(.horizontal, 8)
                 .padding(.bottom, 8)
         }
+        .accessibilityLabel("Checkout")
+        .accessibilityHint("Double tap to complete your order")
+        .accessibilityValue(
+            "Your items in cart: " +
+            vm.cartEntries
+                .map { "\($0.product.productDescription): \($0.quantity)" }
+                .joined(separator: ", ")
+        )
+        .accessibilityAddTraits(.isButton)
     }
     
     private var checkoutAlertMessage: some View {

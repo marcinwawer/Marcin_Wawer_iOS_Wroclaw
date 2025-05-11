@@ -29,14 +29,11 @@ struct ProductListView: View {
                             quantity: quantity(product.id),
                             onFavoriteToggle: { onFavoriteToggle(product.id) }
                         )
-                        .padding(.horizontal, 4)
-                        .padding(.vertical, 4)
+                        .padding(4)
                     }
                 }
                 .padding(.horizontal, 8)
-                .transaction { transaction in
-                    transaction.disablesAnimations = true
-                }
+                .transaction { transaction in transaction.disablesAnimations = true }
             }
     }
 }

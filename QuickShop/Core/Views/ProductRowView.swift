@@ -14,18 +14,29 @@ struct ProductRowView: View {
     @Binding var quantity: Int
     let onFavoriteToggle: () -> Void
     
-    private let width: CGFloat = 150
     private let height: CGFloat = 150
+    private let width: CGFloat = 150
     
     var body: some View {
         HStack {
             productImage
             
             VStack(alignment: .leading) {
-                productDescription
-                
-                productPrice
-                    .padding(.bottom, 8)
+                VStack(alignment: .leading) {
+                    productDescription
+                    productPrice
+                        .padding(.bottom, 8)
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(
+                    "\(product.productDescription), " +
+                    "\(product.discountedPrice.twoDecimalPlaces) pounds"
+                )
+                .accessibilityValue(
+                    "\(remainingStock) in stock, " +
+                    "\(quantity) in cart"
+                )
+                .accessibilityHint("Contains product details, favorite button, and quantity")
                 
                 QuantityStepper(quantity: $quantity, inStockMax: product.inStock)
             }
@@ -63,6 +74,7 @@ extension ProductRowView {
             .frame(width: width-20, height: height-20)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .padding(.leading, 8)
+            .accessibilityHidden(true)
     }
     
     private var productDescription: some View {
@@ -103,5 +115,8 @@ extension ProductRowView {
                 onFavoriteToggle()
             }
             .animation(.default, value: isFavorite)
+            .accessibilityLabel(isFavorite ? "Remove from favorites" : "Add to favorites")
+            .accessibilityHint("Double tap to toggle favorite status")
+            .accessibilityAddTraits(.isButton)
     }
 }

@@ -27,6 +27,21 @@ struct QuantityStepper: View {
         .clipShape(RoundedRectangle(cornerRadius: 6))
         .animation(.easeInOut(duration: 0.3), value: quantity)
         .minimumScaleFactor(0.7)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Quantity")
+        .accessibilityValue("\(quantity)")
+        .accessibilityAdjustableAction { direction in
+            switch direction {
+            case .increment:
+                quantity += 1
+                HapticManager.shared.notification(type: .success)
+            case .decrement:
+                quantity -= 1
+                HapticManager.shared.notification(type: .success)
+            default:
+                break
+            }
+        }
     }
 }
 

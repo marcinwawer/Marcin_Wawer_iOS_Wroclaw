@@ -13,17 +13,23 @@ struct BrowseView: View {
     var body: some View {
         VStack {
             SearchBarView(searchText: $vm.searchText)
+                .accessibilityLabel("Search products")
+                .accessibilityHint("Type here to filter the product list")
             
             sortOptions
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .padding(.horizontal)
+                .accessibilityElement(children: .contain)
             
             VStack {
                 if vm.isLoading {
                     ProgressView()
+                        .accessibilityLabel("Loading products")
                 } else if let error = vm.errorLoading {
-                    Text(error).foregroundColor(.red)
+                    Text(error).foregroundColor(Color.theme.red)
+                        .accessibilityLabel("Loading error")
+                        .accessibilityValue(error)
                 } else {
                     productList
                 }
@@ -33,6 +39,8 @@ struct BrowseView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Text("\(vm.totalPrice.twoDecimalPlaces) £")
+                        .accessibilityLabel("Total price in cart")
+                        .accessibilityValue("\(vm.totalPrice.twoDecimalPlaces) pounds")
                 }
             }
         }
@@ -80,6 +88,13 @@ extension BrowseView {
                     vm.sortOption = vm.sortOption == .stockAsc ? .stockDesc : .stockAsc
                 }
             }
+            .accessibilityLabel("Sort by stock")
+            .accessibilityValue(
+                vm.sortOption == .stockAsc ? "ascending" :
+                    vm.sortOption == .stockDesc ? "descending" : "not sorted"
+            )
+            .accessibilityHint("Double tap to change sort order")
+            .accessibilityAddTraits(.isButton)
             
             HStack(spacing: 4) {
                 Text("Price")
@@ -92,6 +107,13 @@ extension BrowseView {
                     vm.sortOption = vm.sortOption == .priceAsc ? .priceDesc : .priceAsc
                 }
             }
+            .accessibilityLabel("Sort by price")
+            .accessibilityValue(
+                vm.sortOption == .priceAsc ? "ascending" :
+                    vm.sortOption == .priceDesc ? "descending" : "not sorted"
+            )
+            .accessibilityHint("Double tap to change sort order")
+            .accessibilityAddTraits(.isButton)
             
             Spacer()
             
@@ -99,6 +121,9 @@ extension BrowseView {
                 .onTapGesture {
                     vm.sortOption = .none
                 }
+                .accessibilityLabel("Reset sorting")
+                .accessibilityHint("Restores default product order")
+                .accessibilityAddTraits(.isButton)
         }
         .lineLimit(2)
     }

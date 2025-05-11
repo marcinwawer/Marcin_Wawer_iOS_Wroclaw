@@ -12,18 +12,25 @@ struct MainTabView: View {
         TabView {
             NavigationStack {
                 BrowseView()
+                    .accessibilityIdentifier("BrowseView")
             }
             .tabItem {
                 Label("Browse", systemImage: "square.grid.3x3")
+                    .accessibilityLabel("Browse Products")
+                    .accessibilityHint("Opens the product catalog")
             }
             
             NavigationStack {
                 CheckoutView()
+                    .accessibilityIdentifier("CheckoutView")
             }
             .tabItem {
                 Label("Checkout", systemImage: "clock")
+                    .accessibilityLabel("Order Products")
+                    .accessibilityHint("Shows products in your cart and allows you to place an order")
             }
         }
+        .accessibilityElement(children: .contain)
     }
 }
 
