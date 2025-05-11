@@ -14,21 +14,31 @@ struct ProductListView: View {
     let quantity: (UUID) -> Binding<Int>
     let onFavoriteToggle: (UUID) -> Void
     
+    private let minColumnWidth: CGFloat = 400
+    
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 8) {
-                ForEach(products) { product in
-                    ProductRowView(
-                        product: product,
-                        isFavorite: isFavorite(product.id),
-                        remainingStock: remainingStock(product.id),
-                        quantity: quantity(product.id),
-                        onFavoriteToggle: { onFavoriteToggle(product.id) }
-                    )
-                    .padding(.horizontal)
-                    .padding(.vertical, 4)
+            LazyVGrid(
+                columns: [
+                    .init(.adaptive(minimum: minColumnWidth))
+                ]
+            ) {
+                    ForEach(products) { product in
+                        ProductRowView(
+                            product: product,
+                            isFavorite: isFavorite(product.id),
+                            remainingStock: remainingStock(product.id),
+                            quantity: quantity(product.id),
+                            onFavoriteToggle: { onFavoriteToggle(product.id) }
+                        )
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 4)
+                    }
+                }
+                .padding(.horizontal, 8)
+                .transaction { transaction in
+                    transaction.disablesAnimations = true
                 }
             }
-        }
     }
 }

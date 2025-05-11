@@ -15,7 +15,7 @@ struct BrowseView: View {
             SearchBarView(searchText: $vm.searchText)
             
             sortOptions
-                .font(.caption)
+                .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .padding(.horizontal)
             

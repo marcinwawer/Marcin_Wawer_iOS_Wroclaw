@@ -32,6 +32,7 @@ struct SearchBarView: View {
                 )
         )
         .padding()
+        .frame(maxWidth: 600)
     }
 }
 

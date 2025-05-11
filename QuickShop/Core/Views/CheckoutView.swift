@@ -78,7 +78,7 @@ extension CheckoutView {
         } label: {
             Text("Checkout")
                 .foregroundStyle(.black)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: 600)
                 .frame(height: 50)
                 .background(Color.theme.yellow)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
