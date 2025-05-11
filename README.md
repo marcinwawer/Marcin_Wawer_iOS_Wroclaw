@@ -4,15 +4,15 @@
 ### Quick Shop is your on-the-go shopping companion — browse top products, track stock, and checkout in a single tap. Save favorites, apply instant discounts, and adjust quantities with intuitive steppers. <br><br><br>
 
 ### – Effortless browsing, real-time stock & one-tap checkout 🛒
-![light-theme-iphone](https://github.com/user-attachments/assets/fb8383e9-7fee-411b-9c74-c34390ad7b51)
+![light-theme-iphone](https://github.com/user-attachments/assets/58196fa9-4668-4985-a388-78c7e4b586f1)
 <br><br><br>
 
 ### - Light & Dark mode 🌙
-![dark-theme-iphone](https://github.com/user-attachments/assets/f4db769a-760f-43c4-92d4-7385050b9233)
+![dark-theme-iphone](https://github.com/user-attachments/assets/2f1d5321-4a0f-43b0-912c-4d8adbe76da7)
 <br><br><br>
 
 ### – Responsive design adapts seamlessly from iPhone to iPad 📐
-![light-theme-ipad](https://github.com/user-attachments/assets/5db639ce-d338-4ae9-bd01-d24079966847)
+![light-theme-ipad](https://github.com/user-attachments/assets/d0515fcd-9e0f-4488-95cd-cd9d22639d43)
 <br><br><br>
 
 # 👷‍♂️ Built with 
