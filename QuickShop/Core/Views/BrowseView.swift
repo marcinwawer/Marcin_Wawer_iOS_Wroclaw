@@ -100,5 +100,6 @@ extension BrowseView {
                     vm.sortOption = .none
                 }
         }
+        .lineLimit(2)
     }
 }

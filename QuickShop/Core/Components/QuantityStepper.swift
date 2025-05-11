@@ -26,6 +26,7 @@ struct QuantityStepper: View {
         }
         .clipShape(RoundedRectangle(cornerRadius: 6))
         .animation(.easeInOut(duration: 0.3), value: quantity)
+        .minimumScaleFactor(0.7)
     }
 }
 

@@ -19,9 +19,7 @@ struct ProductListView: View {
     var body: some View {
         ScrollView {
             LazyVGrid(
-                columns: [
-                    .init(.adaptive(minimum: minColumnWidth))
-                ]
+                columns: [ .init(.adaptive(minimum: minColumnWidth)) ]
             ) {
                     ForEach(products) { product in
                         ProductRowView(

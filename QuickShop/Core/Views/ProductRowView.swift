@@ -24,19 +24,17 @@ struct ProductRowView: View {
             VStack(alignment: .leading) {
                 productDescription
                 
-                Spacer()
-                
                 productPrice
+                    .padding(.bottom, 8)
                 
                 QuantityStepper(quantity: $quantity, inStockMax: product.inStock)
             }
             .padding(.vertical, 8)
-            .frame(maxHeight: height)
             
             Spacer()
         }
         .frame(maxWidth: .infinity)
-        .frame(height: height)
+        .frame(minHeight: height)
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(Color.theme.yellow.opacity(0.3))
@@ -70,13 +68,14 @@ extension ProductRowView {
     private var productDescription: some View {
         Group {
             Text(product.productDescription)
-                .lineLimit(2)
+                .lineLimit(3)
                 .font(.headline)
-                .padding(.trailing, 25)
+                .padding(.trailing, 50)
             
             Text("\(remainingStock) items in stock")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
+                .lineLimit(1)
         }
         .animation(.easeIn(duration: 0.3), value: remainingStock)
     }
@@ -92,6 +91,8 @@ extension ProductRowView {
         }
         .font(.subheadline)
         .foregroundStyle(Color.theme.red)
+        .minimumScaleFactor(0.7)
+        .lineLimit(1)
     }
     
     private var heartButton: some View {
