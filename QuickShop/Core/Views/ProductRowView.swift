@@ -25,7 +25,6 @@ struct ProductRowView: View {
                 VStack(alignment: .leading) {
                     productDescription
                     productPrice
-                        .padding(.bottom, 8)
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(
@@ -37,6 +36,8 @@ struct ProductRowView: View {
                     "\(quantity) in cart"
                 )
                 .accessibilityHint("Contains product details, favorite button, and quantity")
+                
+                Spacer(minLength: 0)
                 
                 QuantityStepper(quantity: $quantity, inStockMax: product.inStock)
             }
